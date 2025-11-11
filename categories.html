@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block title %}Categories - Budget App{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="fas fa-tags"></i> Categories</h2>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
+        <i class="fas fa-plus"></i> Add Category
+    </button>
+</div>
+
+<div class="row">
+    <!-- Income Categories -->
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <i class="fas fa-arrow-up"></i> Income Categories
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    {% set income_cats = categories|selectattr('type', 'equalto', 'income')|list %}
+                    {% if income_cats %}
+                        {% for cat in income_cats %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span><i class="fas fa-tag text-success"></i> {{ cat.name }}</span>
+                                <form method="POST" action="{{ url_for('delete_category', category_id=cat.category_id) }}" 
+                                      class="d-inline" onsubmit="return confirm('Are you sure? This will fail if transactions exist for this category.');">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </li>
+                        {% endfor %}
+                    {% else %}
+                        <li class="list-group-item text-muted text-center">No income categories yet</li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Expense Categories -->
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header bg-danger text-white">
+                <i class="fas fa-arrow-down"></i> Expense Categories
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    {% set expense_cats = categories|selectattr('type', 'equalto', 'expense')|list %}
+                    {% if expense_cats %}
+                        {% for cat in expense_cats %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span><i class="fas fa-tag text-danger"></i> {{ cat.name }}</span>
+                                <form method="POST" action="{{ url_for('delete_category', category_id=cat.category_id) }}" 
+                                      class="d-inline" onsubmit="return confirm('Are you sure? This will fail if transactions exist for this category.');">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </li>
+                        {% endfor %}
+                    {% else %}
+                        <li class="list-group-item text-muted text-center">No expense categories yet</li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Category Modal -->
+<div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addCategoryModalLabel">
+                    <i class="fas fa-plus-circle"></i> Add New Category
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST" action="{{ url_for('add_category') }}">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Category Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="name" name="name" required 
+                               placeholder="e.g., Groceries, Utilities">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="type" class="form-label">Type <span class="text-danger">*</span></label>
+                        <select class="form-select" id="type" name="type" required>
+                            <option value="">Select Type</option>
+                            <option value="income">Income</option>
+                            <option value="expense">Expense</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Add Category
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

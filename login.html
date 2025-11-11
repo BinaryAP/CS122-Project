@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Budget App</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .login-container {
+            max-width: 450px;
+            width: 100%;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px 15px 0 0 !important;
+            padding: 2rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            padding: 0.75rem;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #5568d3 0%, #6a3f8c 100%);
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="card">
+            <div class="card-header text-center">
+                <h2><i class="fas fa-wallet"></i> Budget App</h2>
+                <p class="mb-0">Login to your account</p>
+            </div>
+            <div class="card-body p-4">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary w-100 mb-3">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </button>
+                    
+                    <div class="text-center">
+                        <p class="mb-0">Don't have an account? 
+                            <a href="{{ url_for('register') }}" class="text-decoration-none">Register here</a>
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+```
+
+## 🎨 **Design Features:**
+
+### **1. Beautiful Gradient Background**
+- Purple gradient (from `#667eea` to `#764ba2`)
+- Full-screen centered layout
+- Professional and modern look
+
+### **2. Card Layout**
+- Rounded corners (15px)
+- Box shadow for depth
+- Gradient header matching background
+- Clean white content area
+
+### **3. Form Elements**
+- **Username field** with user icon
+- **Password field** with lock icon
+- Input groups with icons for better UX
+- Required field validation
+
+### **4. Interactive Elements**
+- Full-width login button with gradient
+- Hover effect on button
+- Link to registration page
+- Flash message alerts (success/error)
+
+## 📍 **Where to Save This File:**
+```
+budget_app/
+└── templates/
+    └── login.html  ← Save here!
+```
+
+## ✅ **Features:**
+
+1. **Flash Messages** - Shows success/error messages
+2. **Form Validation** - Required fields
+3. **Responsive Design** - Works on all screen sizes
+4. **Icon Integration** - Font Awesome icons
+5. **Link to Register** - Easy navigation to registration
+
+## 🔐 **Test Login Credentials:**
+
+After setting up the database with the sample data:
+```
+Username: demo_user
+Password: demo123
+```
+
+## 🎯 **What Happens on Login:**
+
+1. User enters username and password
+2. Form submits to `/login` route (POST)
+3. `app.py` validates credentials using bcrypt
+4. If successful → Redirects to dashboard
+5. If failed → Shows error message and stays on login page
+
+## 🔗 **Navigation Flow:**
+```
+login.html → (successful login) → dashboard.html
+    ↓
+    (click "Register here")
+    ↓
+register.html
